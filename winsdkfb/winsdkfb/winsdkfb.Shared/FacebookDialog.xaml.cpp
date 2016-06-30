@@ -221,6 +221,20 @@ IAsyncOperation<FBResult^>^ FacebookDialog::ShowSendDialog(
         &FacebookDialog::BuildSendDialogUrl), handlerStarting, handlerCompleted, Parameters);
 }
 
+IAsyncOperation<FBResult^>^ FacebookDialog::ShowShareDialog(
+    PropertySet^ Parameters
+)
+{
+    TypedEventHandler<WebView^, WebViewNavigationStartingEventArgs^>^ handlerStarting =
+        ref new TypedEventHandler<WebView^, WebViewNavigationStartingEventArgs^>(
+            this, &FacebookDialog::dialogWebView_SendNavStarting);
+    TypedEventHandler<WebView^, WebViewNavigationCompletedEventArgs^>^ handlerCompleted =
+        ref new TypedEventHandler<WebView^, WebViewNavigationCompletedEventArgs^>(
+            this, &FacebookDialog::dialogWebView_NavCompleted);
+    return ShowDialog(ref new DialogUriBuilder(this,
+        &FacebookDialog::BuildShareDialogUrl), handlerStarting, handlerCompleted, Parameters);
+}
+
 void FacebookDialog::DeleteCookies()
 {
     // This allows on WP8.1 to logIn with other account from the webView
@@ -335,55 +349,43 @@ Uri^ FacebookDialog::BuildFeedDialogUrl(
     PropertySet^ Parameters
     )
 {
-    FBSession^ sess = FBSession::ActiveSession;
-    String^ apiVersion = L"";
-    if (sess->APIMajorVersion)
-    {
-        apiVersion = L"/v" + sess->APIMajorVersion.ToString() + L"." + sess->APIMinorVersion.ToString() + L"/";
-    }
-    String^ dialogUriString =
-        FacebookDialog::GetFBServerUrl() + apiVersion + L"dialog/feed?access_token=" +
-        sess->AccessTokenData->AccessToken +
-        L"&redirect_uri=" + GetRedirectUriString(L"feed") +
-        L"&display=popup" +
-        L"&app_id=" + sess->FBAppId;
-    String^ queryString = HttpManager::Instance->ParametersToQueryString(Parameters);
-    if (queryString->Length() > 0)
-    {
-        dialogUriString += "&" + queryString;
-    }
-
-    return ref new Uri(dialogUriString);
+    return BuildDialogUrl(L"feed", Parameters);
 }
 
 Uri^ FacebookDialog::BuildRequestsDialogUrl(
     PropertySet^ Parameters
     )
 {
-    FBSession^ sess = FBSession::ActiveSession;
-    String^ apiVersion = L"";
-    if (sess->APIMajorVersion)
-    {
-        apiVersion = L"/v" + sess->APIMajorVersion.ToString() + L"." + sess->APIMinorVersion.ToString() + L"/";
-    }
-    String^ dialogUriString =
-        FacebookDialog::GetFBServerUrl() + apiVersion + L"dialog/apprequests?access_token=" +
-        sess->AccessTokenData->AccessToken +
-        L"&redirect_uri=" + GetRedirectUriString(L"requests") +
-        L"&display=popup" +
-        L"&app_id=" + sess->FBAppId;
-    String^ queryString = HttpManager::Instance->ParametersToQueryString(Parameters);
-    if (queryString->Length() > 0)
-    {
-        dialogUriString += "&" + queryString;
-    }
-
-    return ref new Uri(dialogUriString);
+    return BuildDialogUrl(L"apprequests", L"requests", Parameters);
 }
 
 Uri^ FacebookDialog::BuildSendDialogUrl(
     PropertySet^ Parameters
     )
+{
+    return BuildDialogUrl(L"send", Parameters);
+}
+
+Uri^ FacebookDialog::BuildShareDialogUrl(
+    PropertySet^ Parameters
+)
+{
+    return BuildDialogUrl(L"share", Parameters);
+}
+
+Uri^ FacebookDialog::BuildDialogUrl(
+    String^ DialogName,
+    PropertySet^ Parameters
+)
+{
+    return BuildDialogUrl(DialogName, DialogName, Parameters);
+}
+
+Windows::Foundation::Uri^ FacebookDialog::BuildDialogUrl(
+    String^ DialogName,
+    String^ RedirectName,
+    PropertySet^ Parameters
+)
 {
     FBSession^ sess = FBSession::ActiveSession;
     String^ apiVersion = L"";
@@ -392,9 +394,9 @@ Uri^ FacebookDialog::BuildSendDialogUrl(
         apiVersion = L"/v" + sess->APIMajorVersion.ToString() + L"." + sess->APIMinorVersion.ToString() + L"/";
     }
     String^ dialogUriString =
-        FacebookDialog::GetFBServerUrl() + apiVersion + L"dialog/send?access_token=" +
+        FacebookDialog::GetFBServerUrl() + apiVersion + L"dialog/" + DialogName + L"?access_token=" +
         sess->AccessTokenData->AccessToken +
-        L"&redirect_uri=" + GetRedirectUriString(L"send") +
+        L"&redirect_uri=" + GetRedirectUriString(RedirectName) +
         L"&display=popup" +
         L"&app_id=" + sess->FBAppId;
     String^ queryString = HttpManager::Instance->ParametersToQueryString(Parameters);

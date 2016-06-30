@@ -208,6 +208,17 @@ namespace winsdkfb
                 );
 
             /**
+            * Launch 'share' dialog, to share content to user's friends.
+            * @param Parameters The collection of parameters used by the send
+            * dialog. See https://developers.facebook.com/docs/sharing/reference/share-dialog
+            * for more information.
+            * @return FBResult indicating the result of the dialog flow.
+            */
+            Windows::Foundation::IAsyncOperation<FBResult^>^ ShowShareDialogAsync(
+                Windows::Foundation::Collections::PropertySet^ Parameters
+                );
+
+            /**
              * Login to Facebook. This method defaults to SessionLoginBehavior::DefaultOrdering
              * for its login method. The permissions requested are public_profile, email,
              * user_friends.

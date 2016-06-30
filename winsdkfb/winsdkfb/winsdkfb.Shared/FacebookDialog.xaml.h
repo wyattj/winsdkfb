@@ -66,6 +66,10 @@ namespace winsdkfb
             Windows::Foundation::Collections::PropertySet^ Parameters
             );
 
+        Windows::Foundation::IAsyncOperation<winsdkfb::FBResult^>^ ShowShareDialog(
+            Windows::Foundation::Collections::PropertySet^ Parameters
+            );
+
         /*! discussion The current session in webview is required only if the access token is valid
          *  When the access token is removed the cookies must be clean up
          */
@@ -102,6 +106,21 @@ namespace winsdkfb
         Windows::Foundation::Uri^ BuildSendDialogUrl(
             Windows::Foundation::Collections::PropertySet^ Parameters
             );
+
+        Windows::Foundation::Uri^ BuildShareDialogUrl(
+            Windows::Foundation::Collections::PropertySet^ Parameters
+        );
+
+        Windows::Foundation::Uri^ BuildDialogUrl(
+            Platform::String^ DialogName,
+            Windows::Foundation::Collections::PropertySet^ Parameters
+        );
+
+        Windows::Foundation::Uri^ BuildDialogUrl(
+            Platform::String^ DialogName,
+            Platform::String^ RedirectName,
+            Windows::Foundation::Collections::PropertySet^ Parameters
+        );
 
         void dialogWebView_LoginNavStarting(
             Windows::UI::Xaml::Controls::WebView^ sender,

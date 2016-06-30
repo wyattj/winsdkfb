@@ -553,6 +553,47 @@ IAsyncOperation<FBResult^>^ FBSession::ShowSendDialogAsync(
     });
 }
 
+IAsyncOperation<FBResult^>^ FBSession::ShowShareDialogAsync(
+    PropertySet^ Parameters
+)
+{
+    concurrency::task_completion_event<FBResult^> dialogResponse;
+
+    auto callback = ref new DispatchedHandler(
+        [=]()
+    {
+        try
+        {
+            _dialog = ref new FacebookDialog();
+            create_task(_dialog->ShowShareDialog(Parameters)).then([=](FBResult ^result)
+            {
+                dialogResponse.set(result);
+            });
+        }
+        catch (Exception^ ex)
+        {
+            FBError^ err = FBError::FromJson(ref new String(ErrorObjectJson));
+            dialogResponse.set(ref new FBResult(err));
+        }
+    });
+
+    Windows::UI::Core::CoreWindow^ wnd = CoreApplication::MainView->CoreWindow;
+
+    wnd->Dispatcher->RunAsync(
+        Windows::UI::Core::CoreDispatcherPriority::Normal,
+        callback);
+
+    return create_async(
+        [=]()
+    {
+        return create_task(dialogResponse).then([=](FBResult ^result)
+        {
+            _dialog = nullptr;
+            return result;
+        });
+    });
+}
+
 task<FBResult^> FBSession::ShowLoginDialog(
     PropertySet^ Parameters
     )
