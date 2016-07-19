@@ -108,28 +108,40 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <GenerateManifest>false</GenerateManifest>
     <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <GenerateManifest>false</GenerateManifest>
     <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
     <GenerateManifest>false</GenerateManifest>
     <LibraryPath>c:\Program Files (x86)\Windows Kits\10\lib\10.0.10010.0\um\arm;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
     <GenerateManifest>false</GenerateManifest>
     <LibraryPath>c:\Program Files (x86)\Windows Kits\10\lib\10.0.10010.0\um\arm;$(LibraryPath)</LibraryPath>
     <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <GenerateManifest>false</GenerateManifest>
     <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\obj\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <GenerateManifest>false</GenerateManifest>
     <TargetName>$(ProjectName)</TargetName>
+    <OutDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\</OutDir>
+    <IntDir>$(SolutionDir)Build\$(Configuration)\$(MSBuildProjectName)\$(PlatformTarget)\obj\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
